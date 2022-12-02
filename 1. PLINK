@@ -1,0 +1,35 @@
+The first phase of the project is (almost) completely done in PLINK
+First of all you need to import the genotypic data into a folder, and open the console
+
+Useful functions:
+head filname: used to explore the first rows of a file
+more filename: used to explore more lines of a file. to exit you must go to the end + can't go back
+less filename: used to go back in the exploration, you can move back to the starting point
+cut: used to cut something inside the file:
+  example: cut -f 3 filename will cut the third column from the file
+sort: will order the informations
+  sort -u: will order and eliminate the duplicate 
+nano: will open the text editor
+
+Let's start: opening the terminal straight from the folder with the dataset is useful, but you can define the WD later
+
+cut -f 3 sample_all_snp.txt |sort -u : with this code you will extract from the .txt file the third column, 
+                                       and it will order the result:
+Palestinian
+Bedouin
+Druze
+Sardinian
+French
+Han
+Yoruba
+
+now, with nano, let's create a .txt file called pops.txt, in which there is the list of the interest populations
+just insert the name of the populations, then CTRL + O to save and CTRL + X to exit
+
+grep -w -f pops.txt sample_all_snp.txt > samples.txt
+
+command grep will research precise pattern in a text file and will return all rows in which appears the pattern 
+-w: the pattern must be a word
+-f: pattern must be contained into the following file, in this case pops.txt
+> --> the output of the operation will be saved in a new file
+
