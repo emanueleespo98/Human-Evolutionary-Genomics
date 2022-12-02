@@ -1,0 +1,18 @@
+In this file there are notes about my lessons of Human Genomics (lab part). 
+It is all based on a paper which is now well known for these methods. 
+First of all, in order to properly run it, Ubuntu/Linux OS is needed. That's because usually you will work on servers. 
+This method is based on different softwares, so there will also be some parts into R, especially for graphical representations.
+
+These are the steps: 
+1. preparation and manipulation of genomic data with PLINK;
+2. PCA, in this case done to discover if there is a structure within the data we will use
+3. Admixture analysis, a multivariate method used to discover if there is or not a gene flow between populations
+4. F3 test: to formally test the admixture hypothesis
+5. Alder, to date admixture events
+
+Data:
+we will use the Human Diversity Genome Progect (HGDP). This dataset was published in the first 2000s, 
+it contains genomic informations of 1043 different individuals belonging to 51 populations spread worldwide
+
+The dataset is composed by 3 different files: .bed, .bim, .fam + a text file
+.fam extension is a text file which contain information on the individual of the sample and their genotype
