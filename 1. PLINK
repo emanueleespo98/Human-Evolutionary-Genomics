@@ -9,9 +9,12 @@ cut: used to cut something inside the file:
   example: cut -f 3 filename will cut the third column from the file
 sort: will order the informations
   sort -u: will order and eliminate the duplicate 
+  sort -u -n: will order, eliminate the duplicate and order on numerical order
 nano: will open the text editor
-
-Let's start: opening the terminal straight from the folder with the dataset is useful, but you can define the WD later
+ls -lht: will show in chronological order the files present in the directory
+--------------------------------------------------------------------------------------------------
+Let's start: opening the terminal straight from the folder with the dataset is useful, 
+but you can define the WD later
 
 cut -f 3 sample_all_snp.txt |sort -u : with this code you will extract from the .txt file the third column, 
                                        and it will order the result:
@@ -22,7 +25,7 @@ Sardinian
 French
 Han
 Yoruba
-
+-------------------------------------------------------------------------------
 now, with nano, let's create a .txt file called pops.txt, in which there is the list of the interest populations
 just insert the name of the populations, then CTRL + O to save and CTRL + X to exit
 
@@ -32,4 +35,48 @@ command grep will research precise pattern in a text file and will return all ro
 -w: the pattern must be a word
 -f: pattern must be contained into the following file, in this case pops.txt
 > --> the output of the operation will be saved in a new file
+---------------------------------------------------------------------------------
+now we should check if everything is working properly
 
+cut -f 3 samples.txt |sort -u
+
+there is an error! Han-NChina population appears, but this is an error, so:
+
+grep -v 'NChina' samples.txt > samples_last.txt
+
+-v is used to maintain everything as it is when researched pattern 'NChina' is not found, 
+and a new file is created. 
+------------------------------------------------------------------------------------------------
+Now we want to extract in a new file the first column:
+
+cut -f 1 samples_last.txt > temp.txt
+
+and we will paste it into samples_last:
+
+paste temp.txt samples_last.txt > subset.txt
+
+Subset is our new file, ready to be used into PLINK. Its structure is the same as the HGDP file from the beginning
+however, we are doubling the first column in order to let the file to be used by PLINK. 
+At this point, subset.txt contains the list of the samples we want to extract from the entire HGDP dataset
+
+--------------------------------------------------------------------------------------------
+
+plink --bfile HGDP --keep subset.txt --make-bed --out mydata
+
+--bfile is used to suggest a triplet of .bed, .bim, .fam
+--keep will specify the individuals to be maintained
+--make-bed will create a new file triplet
+--out is needed to specify how to name the files
+
+-----------------------------------------------------------------------------------------------
+We are interested in knowing to which chromosome the SNPs are belonging:
+
+cut -f 1 mydata.bim |sort -u -n 
+
+Now, we need to extract all chromosomes between 1 and 22, because we will work on autosomes, that are
+missing on sexual chromosomes and mtDNA
+
+cat mydata.bim |awk '$1<=22'| cut -f 2 > autosomes.txt
+
+cat: catenate command, will transfer text file within mydata.bim to awk operator thanks to the pipeline|
+awk: more than a simple command, it will verify on the first column $1 if condition <=22 is respected
